@@ -1,43 +1,50 @@
 // src/App.tsx
+import { useState } from 'react'
 import { useTransactions } from './hooks/useTransactions'
+import { AddTransactionModal } from './components/AddTransactionModal'
+import { Dashboard } from './components/Dashboard'
+import { TransactionsTable } from './components/TransactionsTable'
+import { Budgets } from './components/Budget'
+import { Goals } from './components/Goals'
 
 function App() {
   const { transactions, addTransaction, deleteTransaction } = useTransactions()
-
-  function handleTestAdd() {
-    addTransaction({
-      amount: -450,
-      date: '2026-08-05',
-      type: 'expense',
-      category: 'Food',
-      description: 'Groceries',
-    })
-  }
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-2xl font-bold mb-4">Finance Tracker</h1>
+      <Dashboard transactions={transactions} />
 
-      <button
-        onClick={handleTestAdd}
-        className="bg-blue-600 text-white px-4 py-2 rounded mb-4"
-      >
-        Add test transaction
-      </button>
+      <div className="flex items-center justify-between mt-6 mb-4">
+        <h1 className="text-2xl font-bold">Transactions</h1>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          + Add transaction
+        </button>
+      </div>
 
-      <ul className="space-y-2">
-        {transactions.map((t) => (
-          <li key={t.id} className="flex justify-between bg-white p-3 rounded shadow">
-            <span>{t.description} — {t.category}</span>
-            <span className={t.amount < 0 ? 'text-red-600' : 'text-green-600'}>
-              ₹{t.amount}
-            </span>
-            <button onClick={() => deleteTransaction(t.id)} className="text-sm text-gray-500">
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
+      {isModalOpen && (
+        <AddTransactionModal
+          onSubmit={(data) => {
+            addTransaction({
+              type: data.type,
+              amount: data.amount,
+              date: data.date,
+              category: data.category as any,
+              description: data.description
+            })
+            setIsModalOpen(false)
+          }}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
+
+      <TransactionsTable transactions={transactions} onDelete={deleteTransaction} />
+
+      <Budgets transactions={transactions} />
+      <Goals />
     </div>
   )
 }

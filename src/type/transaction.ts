@@ -24,3 +24,17 @@ export interface Transaction {
     category: ExpenseCategory | IncomeCategory
     description: string
 }
+
+export interface Budget {
+  id: string
+  category: ExpenseCategory
+  limit: number
+}
+
+export interface Goal {
+  id: string
+  title: string
+  targetAmount: number
+  savedAmount: number
+  targetDate: string
+}
