@@ -17,14 +17,16 @@ export function Goals() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-4 mt-6">
-      <h2 className="text-lg font-bold mb-4">Goals</h2>
+    <div className="app-card mt-6">
+      <h2 className="card-title">Goals</h2>
 
       <form onSubmit={handleSubmit} className="flex gap-2 mb-4 flex-wrap">
-        <input type="text" placeholder="Goal title" value={title} onChange={(e) => setTitle(e.target.value)} className="border rounded px-3 py-2 flex-1 min-w-[140px]" />
-        <input type="number" placeholder="Target amount" value={targetAmount} onChange={(e) => setTargetAmount(e.target.value)} className="border rounded px-3 py-2 w-36" />
-        <input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} className="border rounded px-3 py-2" />
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">Add goal</button>
+        <input type="text" placeholder="Goal title" value={title} onChange={(e) => setTitle(e.target.value)} className="form-input flex-1" style={{ minWidth: 140 }} />
+        <input type="number" placeholder="Target amount" value={targetAmount} onChange={(e) => setTargetAmount(e.target.value)} className="form-input w-36" />
+        <input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} className="form-input" />
+        <button type="submit" className="app-btn btn-primary">
+          Add goal
+        </button>
       </form>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -32,13 +34,13 @@ export function Goals() {
           const pct = Math.min((g.savedAmount / g.targetAmount) * 100, 100)
           const complete = g.savedAmount >= g.targetAmount
           return (
-            <div key={g.id} className="border rounded-lg p-4">
+            <div key={g.id} className="app-card p-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <p className="font-bold">{g.title}</p>
                   <p className="text-xs text-gray-500">Target: {g.targetDate}</p>
                 </div>
-                <button onClick={() => deleteGoal(g.id)} className="text-gray-400 hover:text-red-600 text-sm">Delete</button>
+                <button onClick={() => deleteGoal(g.id)} className="text-gray-400 hover:text-red-600 text-sm font-medium">Delete</button>
               </div>
               <p className="text-xl font-bold mb-1">
                 ₹{g.savedAmount.toFixed(0)} <span className="text-sm text-gray-500 font-normal">of ₹{g.targetAmount}</span>

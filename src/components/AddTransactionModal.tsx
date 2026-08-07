@@ -35,18 +35,18 @@ export function AddTransactionModal({ onSubmit, onClose }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
       <form
         onSubmit={handleSubmit(handleFormSubmit)}
-        className="bg-white rounded-lg p-6 w-full max-w-md space-y-4"
+        className="app-card w-full max-w-md space-y-4 shadow-xl"
       >
         <h2 className="text-lg font-bold">Add Transaction</h2>
 
         <div className="flex gap-2">
-          <label className="flex-1">
+          <label className="flex-1 inline-flex items-center gap-2 text-sm text-gray-700">
             <input type="radio" value="expense" {...register('type')} /> Expense
           </label>
-          <label className="flex-1">
+          <label className="flex-1 inline-flex items-center gap-2 text-sm text-gray-700">
             <input type="radio" value="income" {...register('type')} /> Income
           </label>
         </div>
@@ -57,18 +57,18 @@ export function AddTransactionModal({ onSubmit, onClose }: Props) {
             step="0.01"
             placeholder="Amount"
             {...register('amount')}
-            className="w-full border rounded p-2"
+            className="form-input"
           />
           {errors.amount && <p className="text-red-600 text-sm">{errors.amount.message}</p>}
         </div>
 
         <div>
-          <input type="date" {...register('date')} className="w-full border rounded p-2" />
+          <input type="date" {...register('date')} className="form-input" />
           {errors.date && <p className="text-red-600 text-sm">{errors.date.message}</p>}
         </div>
 
         <div>
-          <select {...register('category')} className="w-full border rounded p-2">
+          <select {...register('category')} className="form-input">
             <option value="">Select category</option>
             {categories.map((c) => (
               <option key={c} value={c}>{c}</option>
@@ -82,16 +82,16 @@ export function AddTransactionModal({ onSubmit, onClose }: Props) {
             type="text"
             placeholder="Description"
             {...register('description')}
-            className="w-full border rounded p-2"
+            className="form-input"
           />
           {errors.description && <p className="text-red-600 text-sm">{errors.description.message}</p>}
         </div>
 
         <div className="flex gap-2 justify-end">
-          <button type="button" onClick={onClose} className="px-4 py-2 rounded border">
+          <button type="button" onClick={onClose} className="app-btn btn-secondary">
             Cancel
           </button>
-          <button type="submit" className="px-4 py-2 rounded bg-blue-600 text-white">
+          <button type="submit" className="app-btn btn-primary">
             Save
           </button>
         </div>

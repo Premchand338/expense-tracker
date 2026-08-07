@@ -1,6 +1,12 @@
-export type TransactionType = 'income' | 'expense'
+export type TransactionType = 'income' | 'expense'  
 
-export type ExpenseCategory =
+// Literal Type 
+// type = "income" ✅
+// type = "expense" ✅
+// type = "earning" ❌
+// type = "money" ❌
+
+export type ExpenseCategory =    // This is also a Literal Type. -> category = "Pizza" ❌  category = "Food" ✅
     | 'Food'
     | 'Rent'
     | 'Transport'
@@ -10,13 +16,13 @@ export type ExpenseCategory =
     | 'Health'
     | 'Other'
 
-export type IncomeCategory =
+export type IncomeCategory =    // This is also a Literal Type. -> category = "Found Pocket" ❌  category = "Other" ✅
     | 'Salary'
     | 'Freelance'
     | 'Investment'
     | 'Other'
 
-export interface Transaction {
+export interface Transaction {   
     id: string
     amount: number
     date: string
