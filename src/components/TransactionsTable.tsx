@@ -6,9 +6,10 @@ import { formatCurrency, CATEGORY_COLORS } from '../utils/format'
 interface Props {
   transactions: Transaction[]
   onDelete: (id: string) => void
+  onEdit: (transaction: Transaction) => void
 }
 
-export function TransactionsTable({ transactions, onDelete }: Props) {
+export function TransactionsTable({ transactions, onDelete, onEdit }: Props) {
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState<'all' | 'income' | 'expense'>('all')
 
@@ -21,12 +22,6 @@ export function TransactionsTable({ transactions, onDelete }: Props) {
     <div className="app-card">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">
         <div className="relative flex-1 min-w-0">
-          <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-gray-400">
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="7" />
-              <line x1="16.65" y1="16.65" x2="21" y2="21" />
-            </svg>
-          </span>
           <input
             type="text"
             placeholder="     Search transactions"
@@ -41,7 +36,7 @@ export function TransactionsTable({ transactions, onDelete }: Props) {
             <button
               key={t}
               onClick={() => setTypeFilter(t)}
-              className={`app-btn ${typeFilter === t ? 'btn-primary' : 'btn-secondary'} capitalize`}
+              className={`app-btn ${typeFilter === t ? 'btn-secondary' : 'btn-ghost'} capitalize`}
             >
               {t}
             </button>
@@ -57,7 +52,7 @@ export function TransactionsTable({ transactions, onDelete }: Props) {
               <th className="px-6 py-4">Description</th>
               <th className="px-6 py-4">Category</th>
               <th className="px-6 py-4 text-right">Amount</th>
-              <th className="px-6 py-4" />
+              <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -78,20 +73,29 @@ export function TransactionsTable({ transactions, onDelete }: Props) {
                 <td className={`px-6 py-4 text-right text-sm font-semibold tabular-nums ${t.amount < 0 ? 'text-red-600' : 'text-emerald-600'}`}>
                   {t.amount < 0 ? '-' : '+'}₹{formatCurrency(Math.abs(t.amount))}
                 </td>
-                <td className="px-6 py-4 text-right">
-                  <button
-                    onClick={() => onDelete(t.id)}
-                    className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M3 6h18" />
-                      <path d="M8 6V4h8v2" />
-                      <path d="M19 6l-1 14H6L5 6" />
-                      <path d="M10 11v6" />
-                      <path d="M14 11v6" />
-                    </svg>
-                    Delete
-                  </button>
+                <td className="px-6 py-4">
+                  <div className="flex justify-end gap-2">
+                    <button
+                      onClick={() => onEdit(t)}
+                      className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100"
+                    >
+                      <i className="fi fi-rr-edit"></i>
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => onDelete(t.id)}
+                      className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M8 6V4h8v2" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6" />
+                        <path d="M14 11v6" />
+                      </svg>
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -119,19 +123,28 @@ export function TransactionsTable({ transactions, onDelete }: Props) {
                 <p className={`text-sm font-semibold tabular-nums ${t.amount < 0 ? 'text-red-600' : 'text-emerald-600'}`}>
                   {t.amount < 0 ? '-' : '+'}₹{formatCurrency(Math.abs(t.amount))}
                 </p>
-                <button
-                  onClick={() => onDelete(t.id)}
-                  className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
-                >
-                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 6h18" />
-                    <path d="M8 6V4h8v2" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6" />
-                    <path d="M14 11v6" />
-                  </svg>
-                  Delete
-                </button>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => onEdit(t)}
+                    className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100"
+                  >
+                    <i className="fi fi-rr-edit"></i>
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => onDelete(t.id)}
+                    className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 6h18" />
+                      <path d="M8 6V4h8v2" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6" />
+                      <path d="M14 11v6" />
+                    </svg>
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>

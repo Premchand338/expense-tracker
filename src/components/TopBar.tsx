@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { format } from 'date-fns'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -10,6 +11,7 @@ function getGreeting() {
 export function TopBar({ name, onAddTransaction }: { name: string; onAddTransaction: () => void }) {
   const [isDark, setIsDark] = useState(false)
   const [lang, setLang] = useState<'EN' | 'HI'>('EN')
+  const today = format(new Date(), 'EEEE, dd MMM yyyy')
 
   return (
     <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
@@ -21,6 +23,11 @@ export function TopBar({ name, onAddTransaction }: { name: string; onAddTransact
       </div>
 
       <div className="flex items-center gap-3">
+        <span className="hidden sm:inline-flex items-center font-bold gap-2 rounded-lg border-2 border-gray-100  bg-white px-3 py-2 text-sm text-[#264A3E]">
+          <i className="fi fi-rr-calendar text-gray-500 font-bold"></i>
+          {today}
+        </span>
+
         <button
           onClick={onAddTransaction}
           className="bg-[#2F5D4E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#264A3E] transition-colors"

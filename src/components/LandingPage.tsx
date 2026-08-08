@@ -22,6 +22,7 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
             <a href="#pricing" className="hover:text-gray-900">Pricing</a>
+             <a href="#features" className="hover:text-gray-900">Features</a>
             <a href="#about" className="hover:text-gray-900">About Us</a>
           </nav>
           <button

@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { transactionSchema, type TransactionFormData } from '../schemas/transactionSchema'
+import type { Transaction } from '../type/transaction'
+import { transactionSchema, type TransactionFormData, type TransactionFormInput } from '../schemas/transactionSchema'
 
 const expenseCategories = ['Food', 'Rent', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Health', 'Other']
 const incomeCategories = ['Salary', 'Freelance', 'Investment', 'Gift', 'Other']
@@ -8,18 +9,29 @@ const incomeCategories = ['Salary', 'Freelance', 'Investment', 'Gift', 'Other']
 interface Props {
   onSubmit: (data: TransactionFormData) => void
   onClose: () => void
+  editingTransaction?: Transaction | null
 }
 
-export function AddTransactionModal({ onSubmit, onClose }: Props) {
+export function AddTransactionModal({ onSubmit, onClose, editingTransaction }: Props) {
+  const isEditing = !!editingTransaction
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
     reset,
-  } = useForm<TransactionFormData>({
-    resolver: zodResolver(transactionSchema) as any,
-    defaultValues: { type: 'expense' },
+  } = useForm<TransactionFormInput, any, TransactionFormData>({
+    resolver: zodResolver(transactionSchema),
+    defaultValues: editingTransaction
+      ? {
+          type: editingTransaction.type,
+          amount: Math.abs(editingTransaction.amount),
+          date: editingTransaction.date,
+          category: editingTransaction.category,
+          description: editingTransaction.description,
+        }
+      : { type: 'expense' },
   })
 
   const selectedType = watch('type')
@@ -28,8 +40,6 @@ export function AddTransactionModal({ onSubmit, onClose }: Props) {
   function handleFormSubmit(data: TransactionFormData) {
     const signedAmount = selectedType === 'expense' ? -Math.abs(data.amount) : Math.abs(data.amount)
     onSubmit({ ...data, amount: signedAmount })
-    console.log(signedAmount);
-    
     reset()
     onClose()
   }
@@ -40,7 +50,7 @@ export function AddTransactionModal({ onSubmit, onClose }: Props) {
         onSubmit={handleSubmit(handleFormSubmit)}
         className="app-card w-full max-w-md space-y-4 shadow-xl"
       >
-        <h2 className="text-lg font-bold">Add Transaction</h2>
+        <h2 className="text-lg font-bold">{isEditing ? 'Edit Transaction' : 'Add Transaction'}</h2>
 
         <div className="flex gap-2">
           <label className="flex-1 inline-flex items-center gap-2 text-sm text-gray-700">
@@ -92,7 +102,7 @@ export function AddTransactionModal({ onSubmit, onClose }: Props) {
             Cancel
           </button>
           <button type="submit" className="app-btn btn-primary">
-            Save
+            {isEditing ? 'Save changes' : 'Save'}
           </button>
         </div>
       </form>

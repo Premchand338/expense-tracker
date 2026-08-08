@@ -23,4 +23,9 @@ export const transactionSchema = z.object({
   description: z.string().min(1, 'Description is required').max(100),
 })
 
-export type TransactionFormData = z.infer<typeof transactionSchema>
+
+// Shape BEFORE Zod processes it — what the form fields actually hold
+export type TransactionFormInput = z.input<typeof transactionSchema>
+
+// Shape AFTER Zod validates/coerces — what handleSubmit's callback receives
+export type TransactionFormData = z.output<typeof transactionSchema>

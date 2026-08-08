@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@import "@flaticon/flaticon-uicons/css/regular/rounded.css";
+
+
+
 * {
   box-sizing: border-box;
 }
@@ -35,11 +39,11 @@ textarea {
   }
 
   .btn-primary {
-    @apply bg-[#2F5D4E] text-white hover:bg-[#264A3E];
+    @apply bg-[#2F5D4E] text-white hover:bg-[#264A3E] w-full;
   }
 
   .btn-secondary {
-    @apply bg-white text-gray-700 border border-gray-200 hover:bg-gray-50;
+    @apply bg-[#2F5D4E] text-white hover:bg-[#264A3E] min-w-auto;
   }
 
   .btn-ghost {
