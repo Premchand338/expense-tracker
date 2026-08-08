@@ -1,98 +1,98 @@
-import fintrackHero from '../assets/herosectionImg.png'
+import fintrackHero from '../assets/heroSectionImg(3).png'
+// import blobBg from '../assets/blob_background.png'
 
 export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#F7F5F0] to-[#EAF0EA] px-8 py-6">
-      <header className="flex items-center gap-2 mb-4">
-        <span className="bg-[#2F5D4E] text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm">📊</span>
-        <span className="font-bold text-lg text-gray-900">FinTrack</span>
-      </header>
+    <div className="min-h-screen bg-white overflow-hidden relative">
+      {/* Background blobs — decorative, behind everything */}
+        <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 -right-40 w-125 h-125 rounded-full bg-[#00E38C] opacity-90 z-0"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-40 -left-40 w-100 h-100 rounded-full bg-[#00E38C] opacity-90 z-0"
+      />
+      <div className="relative z-10">
+        {/* Nav */}
+        <header className="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+          <div className="flex items-center gap-2">
+            <span className="bg-[#00E38C] text-white w-9 h-9 rounded-lg flex items-center justify-center text-sm">📊</span>
+            <span className="font-bold text-xl text-gray-900">FinTrack</span>
+          </div>
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <a href="#pricing" className="hover:text-gray-900">Pricing</a>
+            <a href="#about" className="hover:text-gray-900">About Us</a>
+          </nav>
+          <button
+            onClick={onGetStarted}
+            className="bg-[#3c826e] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#0A2E24] transition-colors flex items-center gap-2"
+          >
+            Sign Up →
+          </button>
+        </header>
 
-      <main className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-10">
-        {/* Left column — unchanged */}
-        <div>
-          <h1 className="section-title tracking-tight leading-[1.05] mb-5">
-            Track Your Money.
-            <br />
-            Build Your <span className="text-[#2F5D4E]">Future.</span>
-          </h1>
-          <p className="text-lg text-gray-600 max-w-md mb-8 leading-relaxed">
-            A smart and simple way to manage your income, expenses and savings — all in one place.
-          </p>
+        {/* Hero */}
+        <main className="max-w-7xl mx-auto px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-10">
+          <div>
+            <span className="inline-flex items-center gap-2 bg-green-50 text-green-700 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+              ✦ Smart Finance, Better Future
+            </span>
 
-          <div className="space-y-4 mb-8">
-            {[
-              { icon: '📈', label: 'Track income & expenses' },
-              { icon: '🥧', label: 'Visualize your spending' },
-              { icon: '💰', label: 'Make smarter financial decisions' },
-            ].map((f) => (
-              <div key={f.label} className="app-card flex items-center gap-3">
-                <span className="bg-green-50 w-10 h-10 rounded-2xl flex items-center justify-center text-lg">{f.icon}</span>
-                <span className="text-gray-700 font-medium">{f.label}</span>
-              </div>
-            ))}
+            <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 leading-[1.05] mb-6">
+              Track. Analyze.
+              <br />
+              Grow Your <span className="text-[#00C97A]">Money.</span>
+            </h1>
+
+            <p className="text-lg text-gray-500 max-w-md mb-8 leading-relaxed">
+              A simple and smart way to manage income, expenses and savings.
+            </p>
+
+            <div className="flex items-center gap-4 mb-10">
+              <button
+                onClick={onGetStarted}
+                className="bg-[#00C97A] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#00B36B] transition-colors flex items-center gap-2"
+              >
+                Get Started Free →
+              </button>
+              <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-gray-400 transition-colors flex items-center gap-2">
+                ▶ View Demo
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { icon: '💼', title: 'Track Transactions', desc: 'Add and organize with ease' },
+                { icon: '📊', title: 'Visualize Spending', desc: 'Clear charts & insights' },
+                { icon: '🛡️', title: 'Secure & Private', desc: 'Your data is protected' },
+              ].map((f) => (
+                <div key={f.title}>
+                  <span className="bg-green-50 w-9 h-9 rounded-lg flex items-center justify-center text-lg mb-2">
+                    {f.icon}
+                  </span>
+                  <p className="text-sm font-semibold text-gray-900">{f.title}</p>
+                  <p className="text-xs text-gray-500">{f.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4">
-            <button
-              onClick={onGetStarted}
-              className="app-btn btn-primary px-8"
-            >
-              Get started →
-            </button>
-            <button onClick={onGetStarted} className="app-btn btn-ghost px-8">
-              Explore dashboard →
-            </button>
+          <div className="w-full flex justify-between lg:justify-end">
+            <img
+              src={fintrackHero}
+              alt="FinTrack dashboard preview"
+              className="w-full max-w-full lg:max-w-225 object-cover rounded-lg shadow-lime-800/40 shadow-lg"
+            />
           </div>
-        </div>
+        </main>
 
-        {/* Right column — your SVG */}
-        <div className="w-full">
-          <img src={fintrackHero} alt="FinTrack dashboard preview" className="w-full h-auto shadow-amber-200" />
-        </div>
-      </main>
-
-{/* How it works */}
-<section className="max-w-5xl mx-auto py-16">
-  <h2 className="text-3xl font-bold text-center text-gray-900 mb-10">How FinTrack works</h2>
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-    {[
-      { step: '1', title: 'Add your transactions', desc: 'Log income and expenses in seconds, categorized automatically.' },
-      { step: '2', title: 'Set budgets & goals', desc: 'Put a limit on spending, or a target on saving — track both live.' },
-      { step: '3', title: 'See where you stand', desc: 'Clear charts show your spending patterns and progress at a glance.' },
-    ].map((s) => (
-      <div key={s.step} className="app-card text-center">
-        <div className="w-10 h-10 rounded-full bg-[#2F5D4E] text-white font-bold flex items-center justify-center mx-auto mb-4">
-          {s.step}
-        </div>
-        <p className="font-semibold text-gray-900 mb-2">{s.title}</p>
-        <p className="text-sm text-gray-500 leading-relaxed">{s.desc}</p>
+        <p className="text-center text-sm text-gray-500 pb-10">
+          🛡️ Join <span className="font-semibold text-gray-900">10,000+</span> users who are managing their finances smarter every day.
+        </p>
       </div>
-    ))}
-  </div>
-</section>
 
-{/* Why FinTrack */}
-<section className="max-w-5xl mx-auto py-10">
-  <div className="app-card p-8 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-    {[
-      { stat: '100%', label: 'Private — your data stays on your device' },
-      { stat: '₹0', label: 'Free to use, no subscriptions' },
-      { stat: '5', label: 'Tools in one place: transactions, budgets, goals, charts, insights' },
-    ].map((s) => (
-      <div key={s.label}>
-        <p className="text-3xl font-bold text-[#2F5D4E] mb-2">{s.stat}</p>
-        <p className="text-sm text-gray-500">{s.label}</p>
-      </div>
-    ))}
-  </div>
-</section>
-
-{/* Footer */}
-<footer className="max-w-5xl mx-auto py-8 mt-10 border-t border-gray-200 flex items-center justify-between text-sm text-gray-400">
-  <span>© 2026 FinTrack. Built as a learning project.</span>
-  <span>Made with React + TypeScript</span>
-</footer>
+      {/* --- keep your existing How it works / Why FinTrack / Footer sections below, unchanged --- */}
     </div>
   )
 }

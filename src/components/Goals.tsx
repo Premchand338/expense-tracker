@@ -17,7 +17,7 @@ export function Goals() {
   }
 
   return (
-    <div className="app-card mt-6">
+    <div className="app-card">
       <h2 className="card-title">Goals</h2>
 
       <form onSubmit={handleSubmit} className="flex gap-2 mb-4 flex-wrap">
