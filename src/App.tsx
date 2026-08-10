@@ -61,7 +61,7 @@ function App() {
           ☰ Menu
         </button>
 
-        <div className="max-w-5xl mx-auto w-full space-y-6">
+        <div className="max-w-7xl mx-auto w-full space-y-6">
           <TopBar
             name="Premchand"
             onAddTransaction={() => {

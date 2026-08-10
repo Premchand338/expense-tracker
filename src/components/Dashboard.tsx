@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Legend } from 'recharts'
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis } from 'recharts'
 import { useState } from 'react'
 import type { Transaction } from '../type/transaction'
 import { getTotalBalance, getMonthlyIncome, getMonthlyExpense, getCategoryBreakdown, getRecentTransactions } from '../utils/calculations'
@@ -34,130 +34,42 @@ export function Dashboard({ transactions, selectedMonth }: { transactions: Trans
 
   return (
     <div className="space-y-6 lg:space-y-8">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <div className="app-card relative overflow-hidden">
-          <div className="flex items-start justify-between gap-3">
-            <div>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500">Total balance · {selectedMonth}</p>
               <p className={`mt-3 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl ${balance < 0 ? 'text-red-600' : 'text-[#2F5D4E]'}`}>
                 ₹{formatCurrency(balance)}
               </p>
             </div>
-            <div className={`rounded-2xl px-3 py-2 text-sm font-semibold ${balanceTone}`}>{balanceBadge}</div>
+            <div className={`max-w-full rounded-2xl px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight wrap-break-word ${balanceTone}`}>
+              {balanceBadge}
+            </div>
           </div>
           <p className="mt-4 text-sm leading-6 text-gray-600">Net position for the selected month.</p>
         </div>
 
         <div className="app-card relative overflow-hidden">
-          <div className="flex items-start justify-between gap-3">
-            <div>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500">Income · {selectedMonth}</p>
               <p className="mt-3 text-3xl font-bold tracking-tight tabular-nums text-emerald-600 sm:text-4xl">₹{formatCurrency(income)}</p>
             </div>
-            <div className="rounded-2xl bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">Steady inflow</div>
+            <div className="max-w-full rounded-2xl bg-emerald-50 px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight text-emerald-700">Steady inflow</div>
           </div>
           <p className="mt-4 text-sm leading-6 text-gray-600">Money received in the selected month.</p>
         </div>
 
         <div className="app-card relative overflow-hidden sm:col-span-2 xl:col-span-1">
-          <div className="flex items-start justify-between gap-3">
-            <div>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500">Expenses · {selectedMonth}</p>
               <p className="mt-3 text-3xl font-bold tracking-tight tabular-nums text-rose-600 sm:text-4xl">₹{formatCurrency(expense)}</p>
             </div>
-            <div className="rounded-2xl bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-700">This month</div>
+            <div className="max-w-full rounded-2xl bg-rose-50 px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight text-rose-700">This month</div>
           </div>
           <p className="mt-4 text-sm leading-6 text-gray-600">Spending in the selected month.</p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="app-card transition-transform duration-200 hover:-translate-y-0.5">
-          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="card-title mb-1">Income vs expenses</p>
-              <p className="text-sm text-gray-500">{selectedMonth} highlighted against recent months.</p>
-            </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600">
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Income
-              <span className="ml-2 h-2.5 w-2.5 rounded-full bg-rose-500" /> Expenses
-            </div>
-          </div>
-          {monthlyData.length === 0 ? (
-            <p className="text-sm text-gray-400">No data yet</p>
-          ) : (
-            <div className="h-72 w-full rounded-2xl bg-linear-to-br from-slate-50 to-white p-2 sm:p-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={monthlyData} margin={{ top: 10, right: 10, bottom: 20, left: 10 }}>
-                  <XAxis dataKey="month" fontSize={12} stroke="#9CA3AF" tickMargin={10} />
-                  <YAxis fontSize={12} stroke="#9CA3AF" tickFormatter={(v) => formatCurrency(v)} />
-                  <Tooltip formatter={formatTooltipValue} />
-                  <Legend wrapperStyle={{ fontSize: 13, paddingTop: 8 }} />
-                  <Bar dataKey="income" name="Income" radius={[4, 4, 0, 0]}>
-                    {monthlyData.map((d, i) => (
-                      <Cell key={i} fill="#16A34A" fillOpacity={d.month === selectedMonth ? 1 : 0.3} />
-                    ))}
-                  </Bar>
-                  <Bar dataKey="expense" name="Expense" radius={[4, 4, 0, 0]}>
-                    {monthlyData.map((d, i) => (
-                      <Cell key={i} fill="#DC2626" fillOpacity={d.month === selectedMonth ? 1 : 0.3} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
-
-        <div className="app-card transition-transform duration-200 hover:-translate-y-0.5">
-          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="card-title mb-1">Spending by category</p>
-              <p className="text-sm text-gray-500">Breakdown for {selectedMonth}.</p>
-            </div>
-            <div className="rounded-full bg-[#2F5D4E]/10 px-3 py-1.5 text-xs font-semibold text-[#2F5D4E]">Live breakdown</div>
-          </div>
-          {categoryData.length === 0 ? (
-            <p className="text-sm text-gray-400">No expenses in {selectedMonth}</p>
-          ) : (
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="h-56 w-full sm:w-1/2">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={categoryData} dataKey="value" nameKey="category" innerRadius={55} outerRadius={85}>
-                      {categoryData.map((d, i) => (
-                        <Cell
-                          key={i}
-                          fill={CATEGORY_COLORS[d.category]?.chart ?? '#9CA3AF'}
-                          stroke={hoveredPieIndex === i ? '#111827' : undefined}
-                          strokeWidth={hoveredPieIndex === i ? 2 : 0}
-                          cursor="pointer"
-                          onMouseEnter={() => setHoveredPieIndex(i)}
-                          onMouseLeave={() => setHoveredPieIndex(null)}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={formatTooltipValue} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="w-full space-y-2.5 sm:w-1/2">
-                {categoryData.map((d) => {
-                  const pct = totalSpending > 0 ? Math.round((d.value / totalSpending) * 100) : 0
-                  return (
-                    <div key={d.category} className="flex items-center justify-between text-sm">
-                      <span className="flex items-center gap-2 text-gray-700">
-                        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[d.category]?.chart ?? '#9CA3AF' }} />
-                        {d.category}
-                      </span>
-                      <span className="font-semibold text-gray-900 tabular-nums">{pct}%</span>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -226,6 +138,96 @@ export function Dashboard({ transactions, selectedMonth }: { transactions: Trans
             </div>
           </div>
         </div>
+        <div className="app-card transition-transform duration-200 hover:-translate-y-0.5">
+          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              {/* <p className="card-title mb-1">Income vs expenses</p> */}
+              <p className="text-sm text-gray-500">{selectedMonth} highlighted against recent months.</p>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" /> Income
+              <span className="ml-2 h-2.5 w-2.5 rounded-full bg-rose-500" /> Expenses
+            </div>
+          </div>
+          {monthlyData.length === 0 ? (
+            <p className="text-sm text-gray-400">No data yet</p>
+          ) : (
+            <div className="h-72 w-full rounded-2xl bg-linear-to-br from-slate-50 to-white p-2 sm:p-4">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlyData} margin={{ top: 10, right: 10, bottom: 20, left: 10 }}>
+                  <XAxis dataKey="month" fontSize={12} stroke="#9CA3AF" tickMargin={10} />
+                  <YAxis fontSize={12} stroke="#9CA3AF" tickFormatter={(v) => formatCurrency(v)} />
+                  <Tooltip formatter={formatTooltipValue} />
+                  <Bar dataKey="income" name="Income" radius={[2, 2, 0, 0]}>
+                    {monthlyData.map((d, i) => (
+                      <Cell key={i} fill="#16A34A" fillOpacity={d.month === selectedMonth ? 1 : 0.3} />
+                    ))}
+                  </Bar>
+                  <Bar dataKey="expense" name="Expense" radius={[2, 2, 0, 0]}>
+                    {monthlyData.map((d, i) => (
+                      <Cell key={i} fill="#DC2626" fillOpacity={d.month === selectedMonth ? 1 : 0.3} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+        </div>
+
+        <div className="app-card transition-transform duration-200 hover:-translate-y-0.5">
+          <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="card-title mb-1">Spending by category</p>
+              <p className="text-sm text-gray-500">Breakdown for {selectedMonth}.</p>
+            </div>
+            <div className="rounded-full bg-[#2F5D4E]/10 px-3 py-1.5 text-xs font-semibold text-[#2F5D4E]">Live breakdown</div>
+          </div>
+          {categoryData.length === 0 ? (
+            <p className="text-sm text-gray-400">No expenses in {selectedMonth}</p>
+          ) : (
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="h-56 w-full sm:w-1/2">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={categoryData} dataKey="value" nameKey="category" innerRadius={55} outerRadius={85}>
+                      {categoryData.map((d, i) => (
+                        <Cell
+                          key={i}
+                          fill={CATEGORY_COLORS[d.category]?.chart ?? '#9CA3AF'}
+                          stroke={hoveredPieIndex === i ? '#111827' : undefined}
+                          strokeWidth={hoveredPieIndex === i ? 2 : 0}
+                          cursor="pointer"
+                          onMouseEnter={() => setHoveredPieIndex(i)}
+                          onMouseLeave={() => setHoveredPieIndex(null)}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={formatTooltipValue} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="w-full space-y-2.5 sm:w-1/2">
+                {categoryData.map((d) => {
+                  const pct = totalSpending > 0 ? Math.round((d.value / totalSpending) * 100) : 0
+                  return (
+                    <div key={d.category} className="flex items-center justify-between text-sm">
+                      <span className="flex items-center gap-2 text-gray-700">
+                        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[d.category]?.chart ?? '#9CA3AF' }} />
+                        {d.category}
+                      </span>
+                      <span className="font-semibold text-gray-900 tabular-nums">{pct}%</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        
       </div>
     </div>
   )
