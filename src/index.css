@@ -11,7 +11,8 @@
 body {
   font-family: 'Roboto', system-ui, sans-serif;
   color: #111827;
-  background: #F7F5F0;
+  background: linear-gradient(180deg, #f8f5ef 0%, #f2eadf 100%);
+  min-height: 100vh;
 }
 
 h1,
@@ -31,7 +32,7 @@ textarea {
 
 @layer utilities {
   .app-card {
-    @apply bg-white rounded-3xl border border-gray-100 shadow-sm p-5 transition-shadow duration-200 hover:shadow-md;
+    @apply rounded-[24px] border border-gray-200/80 bg-white/95 p-5 shadow-[0_10px_35px_rgba(15,23,42,0.06)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_55px_rgba(15,23,42,0.10)];
   }
 
   .app-btn {
@@ -59,10 +60,10 @@ textarea {
   }
 
   .card-title {
-    @apply text-lg font-semibold text-gray-900 mb-4;
+    @apply text-lg font-semibold text-gray-900;
   }
 
   .section-title {
-    @apply text-3xl font-bold text-gray-900;
+    @apply text-2xl font-bold text-gray-900 sm:text-3xl;
   }
 }

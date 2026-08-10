@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { format } from "date-fns";
 import type { View } from "./type/view";
 import type { Transaction } from "./type/transaction";
 import { useTransactions } from "./hooks/useTransactions";
+import { getAvailableMonths } from "./utils/dateHelpers";
 import { AddTransactionModal } from "./components/AddTransactionModal";
 import { Dashboard } from "./components/Dashboard";
 import { TransactionsTable } from "./components/TransactionsTable";
@@ -18,6 +20,9 @@ function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [activeView, setActiveView] = useState<View>("dashboard");
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [selectedMonth, setSelectedMonth] = useState(() => format(new Date(), 'MMM yyyy'));
+
+  const availableMonths = getAvailableMonths(transactions);
 
   if (!hasStarted) {
     return <LandingPage onGetStarted={() => setHasStarted(true)} />;
@@ -63,9 +68,14 @@ function App() {
               setEditingTransaction(null);
               setIsModalOpen(true);
             }}
+            availableMonths={availableMonths}
+            selectedMonth={selectedMonth}
+            onMonthChange={setSelectedMonth}
           />
 
-          {activeView === 'dashboard' && <Dashboard transactions={transactions} />}
+          {activeView === 'dashboard' && (
+            <Dashboard transactions={transactions} selectedMonth={selectedMonth} />
+          )}
 
           {activeView === 'transactions' && (
             <>

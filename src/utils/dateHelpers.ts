@@ -18,3 +18,18 @@ export function groupByMonth(transactions: { date: string; type: string; amount:
     .map(([month, values]) => ({ month, ...values }))
     .sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime())
 }
+
+export function getMonthKey(dateString: string) {
+  return format(parseISO(dateString), 'MMM yyyy')
+}
+
+export function filterByMonth<T extends { date: string }>(transactions: T[], monthKey: string): T[] {
+  return transactions.filter((t) => getMonthKey(t.date) === monthKey)
+}
+
+export function getAvailableMonths(transactions: { date: string }[]) {
+  const current = format(new Date(), 'MMM yyyy')
+  const monthsSet = new Set(transactions.map((t) => getMonthKey(t.date)))
+  monthsSet.add(current)
+  return Array.from(monthsSet).sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
+}

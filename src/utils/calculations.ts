@@ -15,6 +15,10 @@ export function getMonthlyExpense(transactions: Transaction[]) {
   )
 }
 
+export function getRecentTransactions(transactions: Transaction[], limit = 5) {
+  return [...transactions].sort((a, b) => b.date.localeCompare(a.date)).slice(0, limit)
+}
+
 export function getCategoryBreakdown(transactions: Transaction[]) {
   const expenseOnly = transactions.filter((t) => t.type === 'expense')
   const byCategory: Record<string, number> = {}
