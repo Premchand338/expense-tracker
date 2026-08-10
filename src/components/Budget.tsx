@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Transaction, ExpenseCategory } from '../type/transaction'
 import { useBudgets } from '../hooks/useBudgets'
 import { formatCurrency, CATEGORY_COLORS } from '../utils/format'
+import { useToast } from '../context/ToastContext'
 
 const expenseCategories: ExpenseCategory[] = [
   'Food', 'Rent', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Health', 'Other'
@@ -11,6 +12,7 @@ export function Budgets({ transactions }: { transactions: Transaction[] }) {
   const { budgets, setBudget, deleteBudget } = useBudgets()
   const [category, setCategory] = useState<ExpenseCategory>('Food')
   const [limit, setLimit] = useState('')
+  const{ showToast } = useToast()
 
   function getSpent(cat: ExpenseCategory) {
     return Math.abs(
@@ -25,6 +27,7 @@ export function Budgets({ transactions }: { transactions: Transaction[] }) {
     if (!limit) return
     setBudget(category, Number(limit))
     setLimit('')
+    showToast('Budget Added')
   }
 
   return (
@@ -73,17 +76,21 @@ export function Budgets({ transactions }: { transactions: Transaction[] }) {
                     <span className={`text-sm font-medium tabular-nums ${over ? 'text-red-600' : 'text-gray-600'}`}>
                       ₹{formatCurrency(spent)} <span className="text-gray-400 font-normal">/ ₹{formatCurrency(b.limit)}</span>
                     </span>
-                    <button onClick={() => deleteBudget(b.id)} 
-                     className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
-                  >
-                    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M3 6h18" />
-                      <path d="M8 6V4h8v2" />
-                      <path d="M19 6l-1 14H6L5 6" />
-                      <path d="M10 11v6" />
-                      <path d="M14 11v6" />
-                    </svg>
-                    Delete
+                    <button
+                      onClick={() => {
+                        deleteBudget(b.id)
+                        showToast('Budget removed', 'error')
+                      }}
+                      className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M8 6V4h8v2" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6" />
+                        <path d="M14 11v6" />
+                      </svg>
+                      Delete
                     </button>
                   </div>
                 </div>

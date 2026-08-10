@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import type { Budget, ExpenseCategory } from '../type/transaction'
+// import { useToast } from '../context/ToastContext'
 
 const STORAGE_KEY = 'finance-tracker-budgets'
 
 export function useBudgets() {
+  // const {showToast} = useToast()
   const [budgets, setBudgets] = useState<Budget[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     return saved ? JSON.parse(saved) : []
@@ -25,6 +27,7 @@ export function useBudgets() {
 
   function deleteBudget(id: string) {
     setBudgets((prev) => prev.filter((b) => b.id !== id))
+    // showToast('Budget Removed !')
   }
 
   return { budgets, setBudget, deleteBudget }

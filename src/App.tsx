@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import type { View } from "./type/view";
 import type { Transaction } from "./type/transaction";
@@ -12,17 +12,25 @@ import { Goals } from "./components/Goals";
 import { LandingPage } from "./components/LandingPage";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from './components/TopBar'
+import { useToast } from './context/ToastContext'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { transactions, addTransaction, editTransaction, deleteTransaction } = useTransactions();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(() => {
+    return localStorage.getItem('finance-tracker-has-started') === 'true'
+  });
   const [activeView, setActiveView] = useState<View>("dashboard");
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [selectedMonth, setSelectedMonth] = useState(() => format(new Date(), 'MMM yyyy'));
 
   const availableMonths = getAvailableMonths(transactions);
+  const { showToast } = useToast()
+
+  useEffect(() => {
+    localStorage.setItem('finance-tracker-has-started', String(hasStarted))
+  }, [hasStarted]);
 
   if (!hasStarted) {
     return <LandingPage onGetStarted={() => setHasStarted(true)} />;
@@ -30,12 +38,14 @@ function App() {
 
   function handleModalSubmit(data: Omit<Transaction, 'id'>) {
     if (editingTransaction) {
-      editTransaction(editingTransaction.id, data);
+      editTransaction(editingTransaction.id, data)
+      showToast('Transaction updated')
     } else {
-      addTransaction(data);
+      addTransaction(data)
+      showToast('Transaction added')
     }
-    setIsModalOpen(false);
-    setEditingTransaction(null);
+    setIsModalOpen(false)
+    setEditingTransaction(null)
   }
 
   function handleCloseModal() {

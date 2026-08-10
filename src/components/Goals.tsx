@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { useGoals } from '../hooks/useGoals'
 import { formatCurrency } from '../utils/format'
 import { formatDate } from '../utils/dateHelpers'
+import { useToast } from '../context/ToastContext'
 
 export function Goals() {
   const { goals, addGoal, addToGoal, deleteGoal } = useGoals()
   const [title, setTitle] = useState('')
   const [targetAmount, setTargetAmount] = useState('')
   const [targetDate, setTargetDate] = useState('')
+const { showToast } = useToast()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -16,6 +18,7 @@ export function Goals() {
     setTitle('')
     setTargetAmount('')
     setTargetDate('')
+    showToast('Goal added')
   }
 
   return (
@@ -64,11 +67,15 @@ export function Goals() {
                     <p className="text-xs text-gray-400 mt-0.5">Target: {formatDate(g.targetDate)}</p>
                   </div>
                   <button
-                    onClick={() => deleteGoal(g.id)}
-                    className="text-gray-300 hover:text-red-600 transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+                    onClick={() => {
+                      deleteGoal(g.id)
+                      showToast('Goal removed', 'error')
+                    }}
+                    className="inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-2 text-xs font-semibold text-red-700 transition-colors hover:bg-red-100 group-hover:opacity-100 shrink-0"
                     aria-label={`Delete ${g.title} goal`}
                   >
                     <i className="fi fi-rr-trash text-sm"></i>
+                    Delete
                   </button>
                 </div>
 
