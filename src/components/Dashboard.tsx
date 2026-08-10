@@ -6,6 +6,7 @@ import { groupByMonth, filterByMonth, formatDate } from '../utils/dateHelpers'
 import { formatCurrency, CATEGORY_COLORS } from '../utils/format'
 
 export function Dashboard({ transactions, selectedMonth }: { transactions: Transaction[]; selectedMonth: string }) {
+    //  throw new Error('test crash')
   const monthTransactions = filterByMonth(transactions, selectedMonth)
 
   const balance = getTotalBalance(monthTransactions)

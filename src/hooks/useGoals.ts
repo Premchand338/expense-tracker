@@ -1,17 +1,28 @@
 import { useState, useEffect } from 'react'
 import type { Goal } from '../type/transaction'
+import { useToast } from '../context/ToastContext'
 
 const STORAGE_KEY = 'finance-tracker-goals'
 
 export function useGoals() {
+  const { showToast } = useToast()
+
   const [goals, setGoals] = useState<Goal[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    return saved ? JSON.parse(saved) : []
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY)
+      return saved ? JSON.parse(saved) : []
+    } catch {
+      return []
+    }
   })
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(goals))
-  }, [goals])
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(goals))
+    } catch {
+      showToast('Could not save goal — your browser storage may be full or disabled', 'error')
+    }
+  }, [goals, showToast])
 
   function addGoal(goal: Omit<Goal, 'id' | 'savedAmount'>) {
     setGoals((prev) => [...prev, { ...goal, id: crypto.randomUUID(), savedAmount: 0 }])
