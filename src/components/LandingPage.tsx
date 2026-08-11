@@ -101,10 +101,13 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.25, ease: 'easeOut' }}
           >
-            <img
+            <motion.img
               src={fintrackHero}
               alt="FinTrack dashboard preview"
               className="w-full max-w-full lg:max-w-225 object-cover rounded-lg shadow-[#2F5D4E]/20 shadow-xl"
+              whileHover={{ y: -10, scale: 1.02 }}
+              animate={{ y: [0, -8, 0], rotate: [0, 0.5, 0, -0.5, 0] }}
+              transition={{ duration: 8, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
             />
           </motion.div>
         </main>

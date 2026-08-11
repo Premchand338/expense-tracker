@@ -14,6 +14,11 @@ import { Sidebar } from "./components/Sidebar";
 import { TopBar } from './components/TopBar'
 import { useToast } from './context/ToastContext'
 import { LandingSections } from "./components/LandingSection";
+import { useUserName } from "./hooks/useUserName";
+import { NamePromptModal } from "./components/NamePromptModal";
+import { AnimatePresence, motion } from 'framer-motion'
+import { useViewTransition } from './hooks/useViewTransition'
+import { DashboardSkeleton, TableSkeleton, BudgetsGoalsSkeleton } from './components/Skeletons'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -23,8 +28,11 @@ function App() {
     return localStorage.getItem('finance-tracker-has-started') === 'true'
   });
   const [activeView, setActiveView] = useState<View>("dashboard");
+  const isViewLoading = useViewTransition(activeView)
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [selectedMonth, setSelectedMonth] = useState(() => format(new Date(), 'MMM yyyy'));
+  const { name, setName } = useUserName();
+  const [showNamePrompt, setShowNamePrompt] = useState(false);
 
   const availableMonths = getAvailableMonths(transactions);
   const { showToast } = useToast()
@@ -36,14 +44,25 @@ function App() {
   if (!hasStarted) {
     return (
       <div className="min-h-screen bg-white">
-        <LandingPage
-          onGetStarted={() => setHasStarted(true)}
-        />
-        <LandingSections onGetStarted={() => setHasStarted(true)} />
+        <LandingPage onGetStarted={() => setShowNamePrompt(true)} />
+        <LandingSections onGetStarted={() => setShowNamePrompt(true)} />
+
+        {showNamePrompt && (
+          <NamePromptModal
+            onSubmit={(n) => {
+              setName(n)
+              setShowNamePrompt(false)
+              setHasStarted(true)
+            }}
+            onSkip={() => {
+              setShowNamePrompt(false)
+              setHasStarted(true)
+            }}
+          />
+        )}
       </div>
     );
   }
-
 
   function handleModalSubmit(data: Omit<Transaction, 'id'>) {
     if (editingTransaction) {
@@ -62,12 +81,17 @@ function App() {
     setEditingTransaction(null);
   }
 
+  function handleBackToHome() {
+    setHasStarted(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   return (
     <div className="min-h-screen bg-[#F7F5F0] flex">
       <Sidebar
         active={activeView}
         onNavigate={setActiveView}
-        onBackToHome={() => setHasStarted(false)}
+        onBackToHome={handleBackToHome}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
@@ -82,7 +106,8 @@ function App() {
 
         <div className="max-w-7xl mx-auto w-full space-y-6">
           <TopBar
-            name="Premchand"
+            name={name || 'Friend'}
+            onNameChange={setName}
             onAddTransaction={() => {
               setEditingTransaction(null);
               setIsModalOpen(true);
@@ -92,30 +117,47 @@ function App() {
             onMonthChange={setSelectedMonth}
           />
 
-          {activeView === 'dashboard' && (
-            <Dashboard transactions={transactions} selectedMonth={selectedMonth} />
-          )}
+          <AnimatePresence mode="wait">
+            {isViewLoading ? (
+              <motion.div key={`${activeView}-skeleton`} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                {activeView === 'dashboard' && <DashboardSkeleton />}
+                {activeView === 'transactions' && <TableSkeleton />}
+                {activeView === 'budgets-goals' && <BudgetsGoalsSkeleton />}
+              </motion.div>
+            ) : (
+              <motion.div
+                key={`${activeView}-content`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                {activeView === 'dashboard' && (
+                  <Dashboard transactions={transactions} selectedMonth={selectedMonth} />
+                )}
 
-          {activeView === 'transactions' && (
-            <>
-              <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
-              <TransactionsTable
-                transactions={transactions}
-                onDelete={deleteTransaction}
-                onEdit={(t) => {
-                  setEditingTransaction(t);
-                  setIsModalOpen(true);
-                }}
-              />
-            </>
-          )}
+                {activeView === 'transactions' && (
+                  <>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">Transactions</h1>
+                    <TransactionsTable
+                      transactions={transactions}
+                      onDelete={deleteTransaction}
+                      onEdit={(t) => {
+                        setEditingTransaction(t);
+                        setIsModalOpen(true);
+                      }}
+                    />
+                  </>
+                )}
 
-          {activeView === 'budgets-goals' && (
-            <div className="grid gap-6 lg:grid-cols-2">
-              <Budgets transactions={transactions} />
-              <Goals />
-            </div>
-          )}
+                {activeView === 'budgets-goals' && (
+                  <div className="grid gap-6 lg:grid-cols-2">
+                    <Budgets transactions={transactions} />
+                    <Goals />
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {isModalOpen && (
