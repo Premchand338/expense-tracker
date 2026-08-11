@@ -13,6 +13,7 @@ import { LandingPage } from "./components/LandingPage";
 import { Sidebar } from "./components/Sidebar";
 import { TopBar } from './components/TopBar'
 import { useToast } from './context/ToastContext'
+import { LandingSections } from "./components/LandingSection";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -33,8 +34,16 @@ function App() {
   }, [hasStarted]);
 
   if (!hasStarted) {
-    return <LandingPage onGetStarted={() => setHasStarted(true)} />;
+    return (
+      <div className="min-h-screen bg-white">
+        <LandingPage
+          onGetStarted={() => setHasStarted(true)}
+        />
+        <LandingSections onGetStarted={() => setHasStarted(true)} />
+      </div>
+    );
   }
+
 
   function handleModalSubmit(data: Omit<Transaction, 'id'>) {
     if (editingTransaction) {

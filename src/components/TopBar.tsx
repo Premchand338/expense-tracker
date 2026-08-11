@@ -22,15 +22,15 @@ export function TopBar({ name, onAddTransaction, availableMonths, selectedMonth,
   const today = format(new Date(), 'EEEE, dd MMM yyyy')
 
   return (
-    <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-      <div>
-        <p className="text-xl font-bold text-gray-900">
+    <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <p className="text-xl font-bold text-gray-900 truncate">
           {getGreeting()}, {name}! 👋
         </p>
-        <p className="text-sm text-gray-500 mt-0.5">Here's your finances overview for {selectedMonth}.</p>
+        <p className="text-sm text-gray-500 mt-0.5 truncate">Here's your finances overview for {selectedMonth}.</p>
       </div>
 
-      <div className="flex items-center gap-3 flex-wrap">
+      <div className="flex w-full flex-wrap items-center justify-end gap-3 sm:w-auto">
         <span className="hidden sm:inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-600">
           <i className="fi fi-rr-calendar text-gray-400"></i>
           {today}
@@ -39,7 +39,7 @@ export function TopBar({ name, onAddTransaction, availableMonths, selectedMonth,
         <select
           value={selectedMonth}
           onChange={(e) => onMonthChange(e.target.value)}
-          className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2F5D4E]/20 focus:border-[#2F5D4E]"
+          className="w-full max-w-55 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2F5D4E]/20 focus:border-[#2F5D4E] sm:w-auto"
         >
           {availableMonths.map((m) => (
             <option key={m} value={m}>{m}</option>
@@ -48,7 +48,7 @@ export function TopBar({ name, onAddTransaction, availableMonths, selectedMonth,
 
         <button
           onClick={onAddTransaction}
-          className="bg-[#2F5D4E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#264A3E] transition-colors"
+          className="w-full max-w-52.5 bg-[#2F5D4E] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#264A3E] transition-colors sm:w-auto"
         >
           + Add transaction
         </button>
