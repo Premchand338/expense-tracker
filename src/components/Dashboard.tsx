@@ -32,8 +32,8 @@ export function Dashboard({ transactions, selectedMonth }: { transactions: Trans
   }
 
   const balanceTone = balance < 0
-    ? 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400'
-    : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400'
+    ? 'bg-red-50 text-red-700'
+    : 'bg-emerald-50 text-emerald-700'
   const balanceBadge = balance < 0 ? t('needsAttention') : t('healthy')
 
   return (
@@ -42,8 +42,8 @@ export function Dashboard({ transactions, selectedMonth }: { transactions: Trans
         <div className="app-card relative overflow-hidden dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">{t('totalBalance')} · {selectedMonth}</p>
-              <p className={`mt-3 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl ${balance < 0 ? 'text-red-600 dark:text-red-400' : 'text-[#2F5D4E] dark:text-emerald-400'}`}>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500">{t('totalBalance')} · {selectedMonth}</p>
+              <p className={`mt-3 text-3xl font-bold tracking-tight tabular-nums sm:text-4xl ${balance < 0 ? 'text-red-600' : 'text-[#2F5D4E]'}`}>
                 ₹{formatCurrency(balance)}
               </p>
             </div>
@@ -51,29 +51,29 @@ export function Dashboard({ transactions, selectedMonth }: { transactions: Trans
               {balanceBadge}
             </div>
           </div>
-          <p className="mt-4 text-sm leading-6 text-gray-600 dark:text-gray-400">Net position for the selected month.</p>
+          <p className="mt-4 text-sm leading-6 text-gray-600">Net position for the selected month.</p>
         </div>
 
         <div className="app-card relative overflow-hidden dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">{t('monthlyIncome')} · {selectedMonth}</p>
-              <p className="mt-3 text-3xl font-bold tracking-tight tabular-nums text-emerald-600 dark:text-emerald-400 sm:text-4xl">₹{formatCurrency(income)}</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500">{t('monthlyIncome')} · {selectedMonth}</p>
+              <p className="mt-3 text-3xl font-bold tracking-tight tabular-nums text-emerald-600 sm:text-4xl">₹{formatCurrency(income)}</p>
             </div>
-            <div className="max-w-full rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight text-emerald-700 dark:text-emerald-400">{t('steadyInflow')}</div>
+            <div className="max-w-full rounded-2xl bg-emerald-50 px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight text-emerald-700">{t('steadyInflow')}</div>
           </div>
-          <p className="mt-4 text-sm leading-6 text-gray-600 dark:text-gray-400">Money received in the selected month.</p>
+          <p className="mt-4 text-sm leading-6 text-gray-600">Money received in the selected month.</p>
         </div>
 
         <div className="app-card relative overflow-hidden sm:col-span-2 xl:col-span-1 dark:bg-gray-800 dark:border-gray-700">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500 dark:text-gray-400">{t('monthlyExpenses')} · {selectedMonth}</p>
-              <p className="mt-3 text-3xl font-bold tracking-tight tabular-nums text-rose-600 dark:text-rose-400 sm:text-4xl">₹{formatCurrency(expense)}</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-gray-500">{t('monthlyExpenses')} · {selectedMonth}</p>
+              <p className="mt-3 text-3xl font-bold tracking-tight tabular-nums text-rose-600 sm:text-4xl">₹{formatCurrency(expense)}</p>
             </div>
-            <div className="max-w-full rounded-2xl bg-rose-50 dark:bg-rose-500/10 px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight text-rose-700 dark:text-rose-400">{t('thisMonth')}</div>
+            <div className="max-w-full rounded-2xl bg-rose-50 px-3 py-2 text-[clamp(0.72rem,1.4vw,0.88rem)] font-semibold leading-tight text-rose-700">{t('thisMonth')}</div>
           </div>
-          <p className="mt-4 text-sm leading-6 text-gray-600 dark:text-gray-400">Spending in the selected month.</p>
+          <p className="mt-4 text-sm leading-6 text-gray-600">Spending in the selected month.</p>
         </div>
       </div>
 
