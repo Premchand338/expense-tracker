@@ -142,7 +142,7 @@ export function TopBar({
                       onChange={(e) => setEditValue(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && handleSaveName()}
                       autoFocus
-                      className="form-input mb-3 bg-white text-gray-900 placeholder-gray-400 focus:ring-[#2F5D4E]/20 focus:border-[#2F5D4E] dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
+                      className="form-input mb-3 bg-white text-gray-900 placeholder-gray-400 focus:ring-[#2F5D4E]/20 focus:border-[#2F5D4E] dark:border-gray-600 dark:text-white dark:placeholder-gray-400"
                     />
 
                     <button
