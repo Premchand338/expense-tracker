@@ -19,8 +19,10 @@ import { NamePromptModal } from "./components/NamePromptModal";
 import { AnimatePresence, motion } from 'framer-motion'
 import { useViewTransition } from './hooks/useViewTransition'
 import { DashboardSkeleton, TableSkeleton, BudgetsGoalsSkeleton } from './components/Skeletons'
+import { useLanguage } from "./context/LanguageContext";
 
 function App() {
+  const { t } = useLanguage()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { transactions, addTransaction, editTransaction, deleteTransaction } = useTransactions();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -87,7 +89,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F5F0] flex">
+    <div className="min-h-screen bg-[#F7F5F0] dark:bg-gray-900 flex">
       <Sidebar
         active={activeView}
         onNavigate={setActiveView}
@@ -137,7 +139,7 @@ function App() {
 
                 {activeView === 'transactions' && (
                   <>
-                    <h1 className="text-2xl font-bold text-gray-900 mb-4">Transactions</h1>
+                   <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">{t('transactions')}</h1>
                     <TransactionsTable
                       transactions={transactions}
                       onDelete={deleteTransaction}
