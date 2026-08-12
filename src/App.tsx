@@ -22,7 +22,7 @@ import { DashboardSkeleton, TableSkeleton, BudgetsGoalsSkeleton } from './compon
 import { useLanguage } from "./context/LanguageContext";
 
 function App() {
-  const { t } = useLanguage()
+  const { t, lang } = useLanguage()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { transactions, addTransaction, editTransaction, deleteTransaction } = useTransactions();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +30,7 @@ function App() {
     return localStorage.getItem('finance-tracker-has-started') === 'true'
   });
   const [activeView, setActiveView] = useState<View>("dashboard");
-  const isViewLoading = useViewTransition(activeView)
+  const isViewLoading = useViewTransition(`${activeView}-${lang}`)
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [selectedMonth, setSelectedMonth] = useState(() => format(new Date(), 'MMM yyyy'));
   const { name, setName } = useUserName();
