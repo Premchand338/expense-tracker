@@ -1,7 +1,9 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import fintrackHero from '../assets/heroSectionImg(3).png'
+import { useState } from 'react'
 
 export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
     <div className="min-h-screen bg-[#F7F5F0] overflow-hidden relative">
       {/* Background blobs — now brand green, not mint */}
@@ -32,18 +34,59 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
             <span className="bg-[#2F5D4E] text-white w-9 h-9 rounded-lg flex items-center justify-center text-sm">📊</span>
             <span className="font-bold text-xl text-gray-900">FinTrack</span>
           </div>
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            <a href="#pricing" className="hover:text-gray-900 transition-colors">Pricing</a>
-            <a href="#features" className="hover:text-gray-900 transition-colors">Features</a>
-            <a href="#about" className="hover:text-gray-900 transition-colors">About Us</a>
+         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            {['How it works', 'Features', 'About Us'].map((label) => (
+              <a key={label} href={`#${label.toLowerCase().replace(' ', '-')}`} className="relative group">
+                {label}
+                <span className="absolute left-0 -bottom-1 h-px w-0 bg-[#2F5D4E] transition-all duration-300 group-hover:w-full" />
+              </a>
+            ))}
           </nav>
-          <button
+        
+          <motion.button
             onClick={onGetStarted}
-            className="bg-[#2F5D4E] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#264A3E] transition-colors flex items-center gap-2"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            className="hidden sm:flex bg-[#2F5D4E] text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-[#264A3E] transition-colors items-center gap-2"
           >
             Sign Up →
+          </motion.button>
+           <button
+            onClick={() => setIsMenuOpen((v) => !v)}
+            className="md:hidden w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-lg"
+            aria-label="Menu"
+          >
+            {isMenuOpen ? '✕' : '☰'}
           </button>
         </motion.header>
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              className="md:hidden px-6 pb-6 max-w-7xl mx-auto flex flex-col gap-1"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {['Pricing', 'Features', 'About Us'].map((label) => (
+                <a
+                  key={label}
+                  href={`#${label.toLowerCase().replace(' ', '-')}`}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="py-2.5 text-sm font-medium text-gray-700"
+                >
+                  {label}
+                </a>
+              ))}
+              <button
+                onClick={onGetStarted}
+                className="mt-2 bg-[#2F5D4E] text-white px-5 py-2.5 rounded-lg text-sm font-medium"
+              >
+                Sign Up →
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Hero */}
         <main className="max-w-7xl mx-auto px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-10">
@@ -67,15 +110,28 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
             </p>
 
             <div className="flex items-center gap-4 mb-10">
-              <button
+             <motion.div
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 mb-10"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <motion.button
                 onClick={onGetStarted}
-                className="bg-[#2F5D4E] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#264A3E] transition-colors flex items-center gap-2"
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                className="bg-[#2F5D4E] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#264A3E] transition-colors flex items-center justify-center gap-2 shadow-lg shadow-[#2F5D4E]/20"
               >
                 Get Started Free →
-              </button>
-              <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-gray-400 transition-colors flex items-center gap-2">
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:border-gray-400 transition-colors flex items-center justify-center gap-2"
+              >
                 ▶ View Demo
-              </button>
+              </motion.button>
+            </motion.div>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
