@@ -42,7 +42,7 @@ export function LandingSections({ onGetStarted }: Props) {
       />
 
       {/* How it works — connected timeline */}
-      <section className="max-w-6xl mx-auto px-8 py-16 relative">
+      <section className="max-w-6xl mx-auto px-8 py-16 relative " id="how-it-works">
         <motion.div
           className="text-center mb-12"
           initial="hidden"
@@ -91,7 +91,7 @@ export function LandingSections({ onGetStarted }: Props) {
       </section>
 
       {/* Who it's for — distinct accent per audience */}
-      <section className="max-w-6xl mx-auto px-8 py-16">
+      <section className="max-w-6xl mx-auto px-8 py-16" id="who-its-for">
         <motion.div
           className="text-center mb-12"
           initial="hidden"
