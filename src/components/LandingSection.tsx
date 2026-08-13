@@ -110,7 +110,7 @@ export function LandingSections({ onGetStarted }: Props) {
             return (
               <motion.div
                 key={a.title}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 transition-shadow duration-300 hover:shadow-lg"
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 transition-shadow duration-400 hover:shadow-lg"
                 initial="hidden"
                 whileInView="show"
                 whileHover={{ y: -6 }}
@@ -133,7 +133,7 @@ export function LandingSections({ onGetStarted }: Props) {
     
 
       {/* Closing CTA */}
-      <section className="max-w-4xl mx-auto px-8 py-16 text-center">
+      <section className="max-w-4xl mx-auto p-8 text-center">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -153,7 +153,7 @@ export function LandingSections({ onGetStarted }: Props) {
       </section>
 
       {/* Footer */}
-      <footer className="max-w-6xl mx-auto px-8 py-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400">
+      <footer className="max-w-6xl mx-auto p-3 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-gray-400">
         <span>© 2026 FinTrack. Built as a learning project.</span>
         <span>Made with React + TypeScript</span>
       </footer>
