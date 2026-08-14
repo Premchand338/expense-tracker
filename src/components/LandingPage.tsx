@@ -210,7 +210,7 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
           transition={{ duration: 0.4, delay: 0.5 }}
         >
           🛡️ Join <span className="font-semibold text-gray-900">10,000+</span>{" "}
-          users who are managing their finances smarter every day.
+          Users who are managing their finances smarter every day.
         </motion.p>
       </div>
 
